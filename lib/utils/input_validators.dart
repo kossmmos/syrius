@@ -154,14 +154,15 @@ class InputValidators {
     }
   }
 
-  static String? validatePillarMomentumAddress(String? value) {
+  static String? validatePillarMomentumAddress(String? value, List<String?> addressList) {
     if (value != null) {
-      if (checkAddress(value) == null) {
-        if (kDefaultAddressList.contains(value)) {
+      String? checkAddressResponse = checkAddress(value);
+      if (checkAddressResponse == null) {
+        if (addressList.contains(value)) {
           return 'Pillar producer address must be generated from a different seed';
         }
       } else {
-        return checkAddress(value);
+        return checkAddressResponse;
       }
       return null;
     } else {

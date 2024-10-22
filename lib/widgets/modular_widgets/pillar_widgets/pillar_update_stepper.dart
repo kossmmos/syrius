@@ -4,6 +4,7 @@ import 'package:stacked/stacked.dart';
 import 'package:zenon_syrius_wallet_flutter/blocs/blocs.dart';
 import 'package:zenon_syrius_wallet_flutter/utils/app_colors.dart';
 import 'package:zenon_syrius_wallet_flutter/utils/constants.dart';
+import 'package:zenon_syrius_wallet_flutter/utils/global.dart';
 import 'package:zenon_syrius_wallet_flutter/utils/input_validators.dart';
 import 'package:zenon_syrius_wallet_flutter/utils/notification_utils.dart';
 import 'package:zenon_syrius_wallet_flutter/widgets/widgets.dart';
@@ -202,6 +203,7 @@ class _PillarUpdateStepperState extends State<PillarUpdateStepper> {
             thisNode: _pillarMomentumNode,
             validator: (value) => InputValidators.validatePillarMomentumAddress(
               value,
+              kDefaultAddressList,
             ),
             onChanged: (value) {
               setState(() {});
@@ -379,7 +381,7 @@ class _PillarUpdateStepperState extends State<PillarUpdateStepper> {
   bool _arePillarDetailsValid() =>
       InputValidators.checkAddress(_pillarRewardController.text) == null &&
       InputValidators.validatePillarMomentumAddress(
-              _pillarProducerController.text) ==
+              _pillarProducerController.text, kDefaultAddressList) ==
           null;
 
   Widget _getUpdatePillarViewModel() {

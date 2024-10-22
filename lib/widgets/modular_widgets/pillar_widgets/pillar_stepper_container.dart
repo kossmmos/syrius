@@ -605,7 +605,7 @@ class _MainPillarState extends State<PillarStepperContainer> {
                     controller: _pillarMomentumController,
                     thisNode: _pillarMomentumNode,
                     validator: (value) =>
-                        InputValidators.validatePillarMomentumAddress(value),
+                        InputValidators.validatePillarMomentumAddress(value, kDefaultAddressList),
                     onChanged: (value) {
                       setState(() {});
                     },
