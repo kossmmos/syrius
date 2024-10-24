@@ -79,7 +79,7 @@ class _JoinNativeSwapModalState extends State<JoinNativeSwapModal> {
   @override
   Widget build(BuildContext context) {
     return BaseModal(
-      title: 'Join swap',
+      title: context.l10n.joinSwap,
       child: _initialHltc == null
           ? _getSearchView()
           : FutureBuilder<Token?>(
@@ -136,7 +136,7 @@ class _JoinNativeSwapModalState extends State<JoinNativeSwapModal> {
               maxWidth: 45,
               maxHeight: 20,
             ),
-            hintText: 'Deposit ID provided by the counterparty',
+            hintText: context.l10n.depositIdCounterparty,
             contentLeftPadding: 10,
           ),
         ),
@@ -193,9 +193,9 @@ class _JoinNativeSwapModalState extends State<JoinNativeSwapModal> {
 
   Widget _getContinueButton(InitialHtlcForSwapBloc model) {
     return InstructionButton(
-      text: 'Continue',
-      loadingText: 'Searching',
-      instructionText: 'Input the deposit ID',
+      text: context.l10n.continueKey,
+      loadingText: context.l10n.searching,
+      instructionText: context.l10n.inputDepositId,
       isEnabled: _isHashValid(),
       isLoading: _isLoading,
       onPressed: () => _onContinueButtonPressed(model),
@@ -220,8 +220,8 @@ class _JoinNativeSwapModalState extends State<JoinNativeSwapModal> {
           children: [
             Expanded(
               child: LabeledInputContainer(
-                labelText: 'Your address',
-                helpText: 'You will receive the swapped funds to this address.',
+                labelText: context.l10n.yourAddress,
+                helpText: context.l10n.yourAddressHelpText,
                 inputWidget: DisabledAddressField(
                   _addressController,
                   contentLeftPadding: 10,
@@ -234,7 +234,7 @@ class _JoinNativeSwapModalState extends State<JoinNativeSwapModal> {
         Divider(color: Colors.white.withOpacity(0.1)),
         const SizedBox(height: 20),
         LabeledInputContainer(
-          labelText: 'You are sending',
+          labelText: context.l10n.youAreSending,
           inputWidget: Flexible(
             child: StreamBuilder<Map<String, AccountInfo>?>(
               stream: sl.get<BalanceBloc>().stream,
@@ -276,7 +276,7 @@ class _JoinNativeSwapModalState extends State<JoinNativeSwapModal> {
         ),
         kVerticalSpacing,
         HtlcCard.fromHtlcInfo(
-          title: 'You are receiving',
+          title: context.l10n.youAreReceiving,
           htlc: _initialHltc!,
           token: tokenToReceive,
         ),
@@ -286,8 +286,8 @@ class _JoinNativeSwapModalState extends State<JoinNativeSwapModal> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Exchange Rate',
+               Text(
+                context.l10n.exchangeRate,
                 style:
                     TextStyle(fontSize: 14, color: AppColors.subtitleColor),
               ),
@@ -303,32 +303,32 @@ class _JoinNativeSwapModalState extends State<JoinNativeSwapModal> {
             bulletPoints: [
               RichText(
                 text: BulletPointCard.textSpan(
-                  'You have ',
+                  context.l10n.youHave,
                   children: [
                     TextSpan(
                         text:
-                            '${(((_initialHltc!.expirationTime - kMinSafeTimeToFindPreimage.inSeconds - kCounterHtlcDuration.inSeconds) - DateTimeUtils.unixTimeNow) / 60).ceil()} minutes',
+                            '${(((_initialHltc!.expirationTime - kMinSafeTimeToFindPreimage.inSeconds - kCounterHtlcDuration.inSeconds) - DateTimeUtils.unixTimeNow) / 60).ceil()} ${context.l10n.minutes}',
                         style: const TextStyle(
                             fontSize: 14, color: Colors.white,),),
-                    BulletPointCard.textSpan(' left to join the swap.'),
+                    BulletPointCard.textSpan(context.l10n.leftToJoinSwap),
                   ],
                 ),
               ),
               RichText(
                 text: BulletPointCard.textSpan(
-                  'The counterparty will have ',
+                  context.l10n.counterpartyWillHave,
                   children: [
                     TextSpan(
-                        text: '~${kCounterHtlcDuration.inHours} hour',
+                        text: '~${kCounterHtlcDuration.inHours} ${context.l10n.hour}',
                         style: const TextStyle(
                             fontSize: 14, color: Colors.white,),),
-                    BulletPointCard.textSpan(' to complete the swap.'),
+                    BulletPointCard.textSpan(context.l10n.toCompleteSwap),
                   ],
                 ),
               ),
               RichText(
                 text: BulletPointCard.textSpan(
-                  'You can reclaim your funds if the counterparty fails to complete the swap. ',
+                  context.l10n.reclaimYourFunds,
                 ),
               ),
             ],
@@ -341,17 +341,16 @@ class _JoinNativeSwapModalState extends State<JoinNativeSwapModal> {
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 20),
                     child: ImportantTextContainer(
-                      text:
-                          '''You are receiving a token that is not in your favorites. '''
-                          '''Please verify that the token standard is correct: ${tokenToReceive.tokenStandard}''',
+                      text: context.l10n.tokenNotFavorite(
+                          tokenToReceive.tokenStandard,
+                      ),
                       isSelectable: true,
                     ),
                   ),
                 ),
                 _getJoinSwapViewModel(tokenToReceive),
-              ],) else const ImportantTextContainer(
-                text:
-                    'Cannot join swap. The swap will expire too soon for a safe swap.',
+              ],) else ImportantTextContainer(
+                text: context.l10n.cannotJoinSwap,
                 showBorder: true,
               ),
       ],
@@ -382,9 +381,9 @@ class _JoinNativeSwapModalState extends State<JoinNativeSwapModal> {
 
   Widget _getJoinSwapButton(JoinHtlcSwapBloc model, Token tokenToReceive) {
     return InstructionButton(
-      text: 'Join swap',
-      instructionText: 'Input an amount to send',
-      loadingText: 'Sending transaction',
+      text: context.l10n.joinSwap,
+      instructionText: context.l10n.inputAmount,
+      loadingText: context.l10n.sendingTransactions,
       isEnabled: _isInputValid(),
       isLoading: _isLoading,
       onPressed: () => _onJoinButtonPressed(model, tokenToReceive),
